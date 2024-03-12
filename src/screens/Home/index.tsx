@@ -1,3 +1,5 @@
+import { useState } from 'react'
+
 import {
   View,
   Text,
@@ -11,28 +13,19 @@ import { styles } from './styles'
 import { Participant } from '../../components/Participant'
 
 export function Home() {
-  const participants = [
-    'Marcos Moura',
-    'Marcos Renê',
-    'Maria',
-    'Maria Natalia',
-    'João',
-    'João Lauro',
-    'Humberto',
-    'Humberto Damasceno',
-    'Diogo',
-    'Diogo Silva',
-    'Fátima',
-    'Fátima Helena',
-  ]
+  const [participants, setParticipants] = useState<string[]>([])
+  const [participantName, setParticipantName] = useState('')
 
-  function handleParticipantAdd(name: string) {
-    if (participants.includes(name)) {
+  function handleParticipantAdd() {
+    if (participants.includes(participantName)) {
       return Alert.alert(
         'Participante existe',
         'Já existe um partcipanete na lista com esse nome!'
       )
     }
+
+    setParticipants((prevState) => [...prevState, participantName])
+    setParticipantName('')
   }
 
   function handleParticipantRemove(name: string) {
@@ -57,13 +50,12 @@ export function Home() {
         <TextInput
           placeholder="Nome do participante"
           placeholderTextColor="#6B6B6B"
+          onChangeText={setParticipantName}
+          value={participantName}
           style={styles.input}
         />
 
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => handleParticipantAdd('Marcos Moura')}
-        >
+        <TouchableOpacity style={styles.button} onPress={handleParticipantAdd}>
           <Text style={styles.buttonText}>+</Text>
         </TouchableOpacity>
       </View>
